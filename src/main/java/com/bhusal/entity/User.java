@@ -29,7 +29,7 @@ public class User {
 	@Column(name="user_name")
 	@NotEmpty(message="User name must not be empty")
 	@Size(min=2,max=20, message="Name must be 2 to 20 chars long.")
-	@Pattern(regexp = "^[a-zA-Z]*$",message="name must not contain special characters or numbers.")
+	@Pattern(regexp = "^[a-z A-Z]*$",message="name must not contain special characters or numbers.")
 	private String uname;
 	@NotBlank
 	@Column(unique = true)

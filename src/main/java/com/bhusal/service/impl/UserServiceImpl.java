@@ -2,16 +2,17 @@ package com.bhusal.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.bhusal.dto.UserDto;
 import com.bhusal.entity.User;
+import com.bhusal.exception.ResourceNotFoundEx;
 import com.bhusal.repo.UserRepo;
 import com.bhusal.service.UserService;
 
+@Service
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepo userRepo;
@@ -29,20 +30,30 @@ public class UserServiceImpl implements UserService {
 	}
 	// This method updates the user into database
 	@Override
-	public UserDto updateUser(UserDto user, int id) {
-		
-		return null;
+	public UserDto updateUser(UserDto userDto, int id) {
+		User user = userRepo.findById(id).orElseThrow(()->new ResourceNotFoundEx("user","id",id));
+		user.setUname(userDto.getUname()); 
+		user.setEmail(userDto.getEmail());
+		 user.setPassword(userDto.getPassword());
+		 user.setPhoneNumber(userDto.getPhoneNumber()); 
+		 //user.setAbout(userDto.getAbout());
+		 User updatedUser = userRepo.save(user);
+		 UserDto updatedUserDto = new UserDto();
+		 BeanUtils.copyProperties(updatedUser, updatedUserDto);		
+		return updatedUserDto;
 	}
 	// return user by its id
 	@Override
 	public UserDto getUserById(int id) {
+		User user = userRepo.findById(id).orElseThrow(()->new ResourceNotFoundEx("user","id",id));
 		UserDto userDto = new UserDto();
-		Optional<User> optional = userRepo.findById(id);
-		// copy entity into userDto
-		if(optional.isPresent()) {
-			BeanUtils.copyProperties(optional.get(), userDto);
-		}
+		BeanUtils.copyProperties(user, userDto);
 		return userDto;
+		/*
+		 * UserDto userDto = new UserDto(); Optional<User> optional =
+		 * userRepo.findById(id); // copy entity into userDto if(optional.isPresent()) {
+		 * BeanUtils.copyProperties(optional.get(), userDto); } return userDto;
+		 */
 	}
 	// return all the users
 	@Override
@@ -61,8 +72,8 @@ public class UserServiceImpl implements UserService {
 	// deletes a user by its id
 	@Override
 	public void deleteUser(int id) {
-		
-		
+		User user = userRepo.findById(id).orElseThrow(()->new ResourceNotFoundEx("user","id",id));
+		userRepo.delete(user);
 
 	}
 

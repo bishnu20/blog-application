@@ -60,8 +60,7 @@ public class UserController {
 	@PutMapping("/{userId}")
 	public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable("userId") int id){
 		UserDto updatedUser = userSerImpl.updateUser(userDto,id);
-		userSerImpl.createUser(updatedUser);
-		
+		userSerImpl.createUser(updatedUser);		
 		return new ResponseEntity<UserDto>(updatedUser,HttpStatus.OK);
 		
 	}

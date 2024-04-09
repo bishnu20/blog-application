@@ -6,4 +6,5 @@ import com.bhusal.entity.Category;
 
 public interface CategoryRepo extends JpaRepository<Category, Integer> {
 
+
 }

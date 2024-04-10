@@ -2,6 +2,8 @@ package com.bhusal.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,6 +77,18 @@ public class UserServiceImpl implements UserService {
 		User user = userRepo.findById(id).orElseThrow(()->new ResourceNotFoundEx("user","id",id));
 		userRepo.delete(user);
 
+	}
+	
+	public Boolean checkCredentials(String email,String password) {
+		Boolean flag = false;
+		Optional optional = userRepo.findByEmailAndPassword(email, password);
+		if(optional.isPresent()) {
+			flag = true;
+		}
+		
+		return flag
+				;
+		
 	}
 
 }

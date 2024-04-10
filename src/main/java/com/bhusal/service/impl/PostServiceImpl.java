@@ -1,10 +1,14 @@
 package com.bhusal.service.impl;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bhusal.dto.PostDto;
 import com.bhusal.entity.Category;
@@ -71,18 +75,26 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostDto updatePost(PostDto pDto, int id) {
-		
-		
-		return null;
+	public PostDto updatePost(PostDto pDto, int postId) {
+		Post post = pRepo.findById(postId).orElseThrow(()-> new ResourceNotFoundEx("Post", "id", postId));
+		post.setTitle(pDto.getTitle());
+		post.setContent(pDto.getContent());
+		post.setImage(pDto.getImage());
+		post.setUpdatedDate(LocalDate.now());
+		// save the post
+		Post updatedPost = pRepo.save(post);
+		PostDto updatedDto = new PostDto();
+		BeanUtils.copyProperties(updatedPost, updatedDto);		
+		return updatedDto;
 	}
 
 	@Override
 	public void deletePostById(int id) {
 		
 		Post post = pRepo.findById(id).orElseThrow(()-> new ResourceNotFoundEx("Post", "id", id));
-		uRepo.delete(post.getUser());
-		cRepo.delete(post.getCategory());
+		/*
+		 * uRepo.delete(post.getUser()); cRepo.delete(post.getCategory());
+		 */
 		pRepo.delete(post);
 		
 	}
@@ -114,5 +126,6 @@ public class PostServiceImpl implements PostService {
 		return listOfPostDtos;
 	
 	}
+
 
 }

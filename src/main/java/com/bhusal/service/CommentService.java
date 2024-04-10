@@ -5,11 +5,11 @@ import java.util.List;
 import com.bhusal.dto.CommentDto;
 
 public interface CommentService {
-CommentDto createComment(CommentDto commentDto);
+	CommentDto createComment(CommentDto commentDto,int postId,int userId);
 	
-CommentDto updateComment(CommentDto commentDto,int id);
+	CommentDto updateComment(CommentDto commentDto,int id);
 	
-CommentDto getCommentById(int id);
+	CommentDto getCommentById(int id);
 	
 	List<CommentDto> comments();
 	

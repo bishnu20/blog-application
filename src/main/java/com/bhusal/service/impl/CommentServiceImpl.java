@@ -3,25 +3,44 @@ package com.bhusal.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.bhusal.dto.CommentDto;
 import com.bhusal.entity.Comment;
+import com.bhusal.entity.Post;
+import com.bhusal.entity.User;
 import com.bhusal.exception.ResourceNotFoundEx;
 import com.bhusal.repo.CommentRepo;
+import com.bhusal.repo.PostRepo;
+import com.bhusal.repo.UserRepo;
 import com.bhusal.service.CommentService;
 
+@Service
 public class CommentServiceImpl implements CommentService {
 	
 	// autowire commentRepository
+	@Autowired
 	private CommentRepo comRepo;
+	@Autowired
+	private UserRepo userRepo;
+	@Autowired
+	private PostRepo postRepo;
 
 	@Override
-	public CommentDto createComment(CommentDto commentDto) {
+	public CommentDto createComment(CommentDto commentDto,int postId,int userId) {
+		 User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundEx("User", "id", userId));
+		 Post post = postRepo.findById(postId).orElseThrow(()-> new ResourceNotFoundEx("Post", "id", postId));
 		Comment comment = new Comment();
+		comment.setComment(commentDto.getComment());
+		comment.setUser(user);
+		comment.setPost(post);
+		Comment savedComment = comRepo.save(comment);
+		CommentDto savedCommentDto = new CommentDto();
 		// change commentDto into CommentDto
-		BeanUtils.copyProperties(commentDto, comment);
-		comRepo.save(comment);		
-		return commentDto;
+		BeanUtils.copyProperties(savedComment, savedCommentDto);
+		//comRepo.save(comment);		
+		return savedCommentDto;
 	}
 
 	@Override

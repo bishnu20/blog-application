@@ -3,6 +3,7 @@ package com.bhusal.dto;
 import java.time.LocalDate;
 
 import com.bhusal.entity.Category;
+import com.bhusal.entity.Comment;
 import com.bhusal.entity.User;
 
 import lombok.AllArgsConstructor;
@@ -21,5 +22,6 @@ public class PostDto {
 	private LocalDate updatedDate;
 	private Category category;
 	private User user;
+	private Comment comment;
 
 }

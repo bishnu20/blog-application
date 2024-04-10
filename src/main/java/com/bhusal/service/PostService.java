@@ -3,7 +3,6 @@ package com.bhusal.service;
 import java.util.List;
 
 import com.bhusal.dto.PostDto;
-import com.bhusal.entity.Post;
 
 public interface PostService {
 	PostDto createPost(PostDto pDto,int userId, int catId);
@@ -15,6 +14,7 @@ public interface PostService {
 	List<PostDto> getAllPostsByUser(int userId);
 	//get all posts by category
 	List<PostDto> getPostByCategory(Integer categoryId);
+	//String uploadImage(String path, MultipartFile file) throws IOException;
 	
 
 }

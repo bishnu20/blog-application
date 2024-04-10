@@ -1,18 +1,14 @@
 package com.bhusal.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -47,6 +43,10 @@ public class User {
 	// here, first number can be 0 or 91, ?-> not mandatory, [6-9]-> can start any number bet 6 to 9, [0-9]-> can contain any number from 0 to 9, {9}-> can repeat 9 times.
 	private String phoneNumber;
 	//private String about;
+	
+	@OneToOne
+	@JoinColumn(name="role_id")	
+	private Role role;
 	
 	/*
 	 * @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch
